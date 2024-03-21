@@ -1,14 +1,27 @@
 
-
 class CacheSimulator:
     def __init__(self, cache_slots):
         self.cache_slots = cache_slots
         self.cache_hit = 0
         self.tot_cnt = 1
-    
+        self.cache = []
+
     def do_sim(self, page):
-        pass
-        # Do programming here! 
+
+        page_found = False
+        for i in range(len(self.cache)):
+            if self.cache[i] == page:
+                self.cache.pop(i)
+                self.cache.append(page)
+                self.cache_hit += 1
+                page_found = True
+                break
+        if not page_found:
+            if len(self.cache) >= self.cache_slots:
+                self.cache.pop(0)
+            self.cache.append(page)
+
+        self.tot_cnt += 1
         
     def print_stats(self):
         print("cache_slot = ", self.cache_slots, "cache_hit = ", self.cache_hit, "hit ratio = ", self.cache_hit / self.tot_cnt)
